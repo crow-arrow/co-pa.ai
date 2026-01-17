@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Instagram, Twitter, Youtube, MessageCircle } from "lucide-react"
 import LazyVideo from "./lazy-video"
 import Image from "next/image"
+import { accent } from "@/lib/colors"
 
 interface FooterContent {
   tagline: string
@@ -43,7 +44,7 @@ export function AppverseFooter() {
         <div className="flex justify-center">
           <Button
             asChild
-            className="rounded-full bg-lime-400 px-6 py-2 text-sm font-medium text-black shadow-[0_0_20px_rgba(163,230,53,0.35)] hover:bg-lime-300"
+            className={`rounded-full ${accent.bg} px-6 py-2 text-sm font-medium text-black shadow-[0_0_20px_rgba(255,69,0,0.35)] ${accent.hoverBg90}`}
           >
             <a href="https://wa.link/rc25na" target="_blank" rel="noopener noreferrer">
               Contact us
@@ -58,7 +59,7 @@ export function AppverseFooter() {
           <div className="relative grid items-center gap-8 md:grid-cols-2">
             {/* Left copy */}
             <div>
-              <p className="mb-2 text-[11px] tracking-widest text-lime-300">STREAMLINE YOUR LAUNCHES</p>
+              <p className={`mb-2 text-[11px] tracking-widest ${accent.text}`}>STREAMLINE YOUR LAUNCHES</p>
               <h3 className="text-2xl font-bold leading-tight text-white sm:text-3xl">
                 Preview &amp; approve high-end 3D visuals from anywhere
               </h3>
@@ -86,9 +87,9 @@ export function AppverseFooter() {
                   <div className="relative p-3">
                     <div className="mx-auto mb-3 h-1.5 w-16 rounded-full bg-white/20" />
                     <div className="space-y-1 px-1">
-                      <div className="text-5xl font-extrabold text-lime-300">Approvals Made Easy</div>
+                      <div className={`text-5xl font-extrabold ${accent.text}`}>Approvals Made Easy</div>
                       <p className="text-xs text-white/80">From feedback to approval in a single flow</p>
-                      <div className="mt-3 inline-flex items-center rounded-full bg-black/40 px-2 py-0.5 text-[10px] uppercase tracking-wider text-lime-300">
+                      <div className={`mt-3 inline-flex items-center rounded-full bg-black/40 px-2 py-0.5 text-[10px] uppercase tracking-wider ${accent.text}`}>
                         Zero Hassle
                       </div>
                     </div>
@@ -108,7 +109,7 @@ export function AppverseFooter() {
             <div className="space-y-3">
               <div className="flex items-center gap-1.5">
                 <Image src="/icons/skitbit-white.svg" alt="Skitbit logo" width={24} height={24} className="h-6 w-6" />
-                <span className="text-xl font-semibold text-lime-300">Skitbit</span>
+                <span className={`text-xl font-semibold ${accent.text}`}>Skitbit</span>
               </div>
               <p className="max-w-sm text-sm text-neutral-400">{content.tagline}</p>
             </div>
@@ -120,7 +121,7 @@ export function AppverseFooter() {
                 <ul className="space-y-2 text-sm text-neutral-300">
                   {["Home", "Features", "Testimonials", "Pricing", "Blog", "Download"].map((item) => (
                     <li key={item}>
-                      <Link href={`#${item.toLowerCase()}`} className="hover:text-lime-300">
+                      <Link href={`#${item.toLowerCase()}`} className={accent.hoverText}>
                         {item}
                       </Link>
                     </li>
@@ -136,7 +137,7 @@ export function AppverseFooter() {
                       href="https://twitter.com/theskitbit"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-lime-300"
+                      className={accent.hoverText}
                       aria-label="Follow skitbit on Twitter"
                     >
                       X/Twitter
@@ -148,7 +149,7 @@ export function AppverseFooter() {
                       href="https://www.youtube.com/@skitbitinternational"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-lime-300"
+                      className={accent.hoverText}
                       aria-label="Subscribe to skitbit on YouTube"
                     >
                       YouTube
@@ -160,7 +161,7 @@ export function AppverseFooter() {
                       href="https://instagram.com/theskitbit"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-lime-300"
+                      className={accent.hoverText}
                       aria-label="Follow skitbit on Instagram"
                     >
                       Instagram
@@ -172,7 +173,7 @@ export function AppverseFooter() {
                       href="https://threads.com/theskitbit"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-lime-300"
+                      className={accent.hoverText}
                       aria-label="Follow skitbit on Threads"
                     >
                       Threads
@@ -187,10 +188,10 @@ export function AppverseFooter() {
           <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-neutral-500 sm:flex-row">
             <p>{content.copyright}</p>
             <div className="flex items-center gap-6">
-              <Link href="/revisions" className="hover:text-lime-300">
+              <Link href="/revisions" className={accent.hoverText}>
                 Revision Policy
               </Link>
-              <Link href="/t&c" className="hover:text-lime-300">
+              <Link href="/t&c" className={accent.hoverText}>
                 Terms & Conditions
               </Link>
             </div>

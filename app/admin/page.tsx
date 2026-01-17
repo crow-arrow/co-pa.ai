@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { accent } from "@/lib/colors"
 import {
   Home,
   Settings,
@@ -529,7 +530,7 @@ export default function AdminDashboard() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-[#C6FF3A] border-t-transparent rounded-full animate-spin"></div>
+        <div className={`w-6 h-6 border-2 ${accent.border} border-t-transparent rounded-full animate-spin`}></div>
       </div>
     )
   }
@@ -653,8 +654,8 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-green-400 font-semibold">{item.change}</span>
-                    <TrendingUp className="h-4 w-4 text-green-400" />
+                    <span className={`${accent.text} font-semibold`}>{item.change}</span>
+                    <TrendingUp className={`h-4 w-4 ${accent.text}`} />
                   </div>
                 </div>
               ))}
@@ -687,7 +688,7 @@ export default function AdminDashboard() {
               <Button
                 onClick={handleSave}
                 disabled={!hasChanges || isSaving}
-                className="bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90"
+                className={`${accent.bg} text-black ${accent.hoverBg90}`}
               >
                 <Save className="h-4 w-4 mr-2" />
                 {isSaving ? "Saving..." : "Save Changes"}
@@ -697,7 +698,7 @@ export default function AdminDashboard() {
 
           {saveMessage && (
             <Alert
-              className={`${saveMessage.includes("Error") ? "bg-red-500/10 border-red-500/30 text-red-300" : "bg-green-500/10 border-green-500/30 text-green-300"}`}
+              className={`${saveMessage.includes("Error") ? "bg-red-500/10 border-red-500/30 text-red-300" : `${accent.bg10} ${accent.border30} ${accent.text}`}`}
             >
               {saveMessage.includes("Error") ? (
                 <AlertCircle className="h-4 w-4" />
@@ -712,19 +713,19 @@ export default function AdminDashboard() {
             <TabsList className="grid w-full grid-cols-3 bg-neutral-900/50 border border-neutral-800">
               <TabsTrigger
                 value="hero"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 Hero
               </TabsTrigger>
               <TabsTrigger
                 value="features"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 Features
               </TabsTrigger>
               <TabsTrigger
                 value="footer"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 Footer
               </TabsTrigger>
@@ -849,7 +850,7 @@ export default function AdminDashboard() {
               <Button
                 onClick={handleSave}
                 disabled={!hasChanges || isSaving}
-                className="bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90"
+                className={`${accent.bg} text-black ${accent.hoverBg90}`}
               >
                 <Save className="h-4 w-4 mr-2" />
                 {isSaving ? "Saving..." : "Save Changes"}
@@ -859,7 +860,7 @@ export default function AdminDashboard() {
 
           {saveMessage && (
             <Alert
-              className={`${saveMessage.includes("Error") ? "bg-red-500/10 border-red-500/30 text-red-300" : "bg-green-500/10 border-green-500/30 text-green-300"}`}
+              className={`${saveMessage.includes("Error") ? "bg-red-500/10 border-red-500/30 text-red-300" : `${accent.bg10} ${accent.border30} ${accent.text}`}`}
             >
               {saveMessage.includes("Error") ? (
                 <AlertCircle className="h-4 w-4" />
@@ -878,19 +879,19 @@ export default function AdminDashboard() {
             <TabsList className="grid w-full grid-cols-3 bg-neutral-900/50 border border-neutral-800">
               <TabsTrigger
                 value="startup"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 Startup
               </TabsTrigger>
               <TabsTrigger
                 value="pro"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 Pro
               </TabsTrigger>
               <TabsTrigger
                 value="premium"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 Premium
               </TabsTrigger>
@@ -1041,7 +1042,7 @@ export default function AdminDashboard() {
               <Button
                 onClick={handleSave}
                 disabled={!hasChanges || isSaving}
-                className="bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90"
+                className={`${accent.bg} text-black ${accent.hoverBg90}`}
               >
                 <Save className="h-4 w-4 mr-2" />
                 {isSaving ? "Saving..." : "Save Changes"}
@@ -1051,7 +1052,7 @@ export default function AdminDashboard() {
 
           {saveMessage && (
             <Alert
-              className={`${saveMessage.includes("Error") ? "bg-red-500/10 border-red-500/30 text-red-300" : "bg-green-500/10 border-green-500/30 text-green-300"}`}
+              className={`${saveMessage.includes("Error") ? "bg-red-500/10 border-red-500/30 text-red-300" : `${accent.bg10} ${accent.border30} ${accent.text}`}`}
             >
               {saveMessage.includes("Error") ? (
                 <AlertCircle className="h-4 w-4" />
@@ -1066,25 +1067,25 @@ export default function AdminDashboard() {
             <TabsList className="grid w-full grid-cols-4 bg-neutral-900/50 border border-neutral-800">
               <TabsTrigger
                 value="settings"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 Settings
               </TabsTrigger>
               <TabsTrigger
                 value="modeling"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 3D Modeling
               </TabsTrigger>
               <TabsTrigger
                 value="renders"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 Renders
               </TabsTrigger>
               <TabsTrigger
                 value="flow"
-                className="data-[state=active]:bg-[#C6FF3A]/20 data-[state=active]:text-[#C6FF3A]"
+                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
               >
                 Form Flow
               </TabsTrigger>
@@ -1240,7 +1241,7 @@ export default function AdminDashboard() {
                       <h4 className="text-white font-semibold mb-2">Startup Plan</h4>
                       <div className="flex items-center justify-between">
                         <span className="text-neutral-300 text-sm">Includes Simple 3D Modeling</span>
-                        <Badge className="bg-green-500/20 text-green-300 border-green-500/30">Included</Badge>
+                        <Badge className={`${accent.bg20} ${accent.text} ${accent.border30}`}>Included</Badge>
                       </div>
                       <p className="text-neutral-400 text-xs mt-2">
                         Skips 3D model questions, goes straight to render upsell
@@ -1277,7 +1278,7 @@ export default function AdminDashboard() {
                   {content.orderForm.formSteps.map((step, index) => (
                     <div key={index} className="flex items-center gap-4 p-4 border border-neutral-700 rounded-lg">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-[#C6FF3A]/20 rounded-full flex items-center justify-center text-[#C6FF3A] font-semibold">
+                        <div className={`w-8 h-8 ${accent.bg20} rounded-full flex items-center justify-center ${accent.text} font-semibold`}>
                           {index + 1}
                         </div>
                         <div className="flex-1 space-y-2">
@@ -1314,7 +1315,7 @@ export default function AdminDashboard() {
                           }}
                           className={`${
                             step.enabled
-                              ? "text-green-400 hover:text-green-300"
+                              ? `${accent.text} ${accent.text80}`
                               : "text-neutral-500 hover:text-neutral-400"
                           }`}
                         >
@@ -1340,7 +1341,7 @@ export default function AdminDashboard() {
                       {content.orderForm.formSteps
                         .filter((step) => step.enabled)
                         .map((step, index) => (
-                          <Badge key={index} className="bg-[#C6FF3A]/20 text-[#C6FF3A] border-[#C6FF3A]/30">
+                          <Badge key={index} className={`${accent.bg20} ${accent.text} ${accent.border30}`}>
                             {index + 1}. {step.title}
                           </Badge>
                         ))}
@@ -1378,12 +1379,12 @@ export default function AdminDashboard() {
                     <p className="text-2xl font-bold text-white">{item.value}</p>
                     <div className="flex items-center gap-2">
                       <span
-                        className={`text-sm font-semibold ${item.trend === "up" ? "text-green-400" : "text-red-400"}`}
+                        className={`text-sm font-semibold ${item.trend === "up" ? accent.text : "text-red-400"}`}
                       >
                         {item.change}
                       </span>
                       <TrendingUp
-                        className={`h-4 w-4 ${item.trend === "up" ? "text-green-400" : "text-red-400 rotate-180"}`}
+                        className={`h-4 w-4 ${item.trend === "up" ? accent.text : "text-red-400 rotate-180"}`}
                       />
                     </div>
                   </div>
@@ -1425,7 +1426,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="flex items-center gap-4">
                       <span className="text-neutral-300">{item.views} views</span>
-                      <span className="text-green-400 font-semibold">{item.change}</span>
+                      <span className={`${accent.text} font-semibold`}>{item.change}</span>
                     </div>
                   </div>
                 ))}
@@ -1446,7 +1447,7 @@ export default function AdminDashboard() {
 
           {saveMessage && (
             <Alert
-              className={`${saveMessage.includes("Error") ? "bg-red-500/10 border-red-500/30 text-red-300" : "bg-green-500/10 border-green-500/30 text-green-300"}`}
+              className={`${saveMessage.includes("Error") ? "bg-red-500/10 border-red-500/30 text-red-300" : `${accent.bg10} ${accent.border30} ${accent.text}`}`}
             >
               {saveMessage.includes("Error") ? (
                 <AlertCircle className="h-4 w-4" />
@@ -1541,7 +1542,7 @@ export default function AdminDashboard() {
             <Button
               onClick={handleSave}
               disabled={!hasChanges || isSaving}
-              className="bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90"
+              className={`${accent.bg} text-black ${accent.bg90}`}
             >
               <Save className="h-4 w-4 mr-2" />
               {isSaving ? "Saving..." : "Save Settings"}
@@ -1566,7 +1567,7 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-[#C6FF3A] rounded-full flex items-center justify-center text-black text-sm font-bold">
+                  <div className={`w-6 h-6 ${accent.bg} rounded-full flex items-center justify-center text-black text-sm font-bold`}>
                     1
                   </div>
                   <div>
@@ -1575,7 +1576,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-[#C6FF3A] rounded-full flex items-center justify-center text-black text-sm font-bold">
+                  <div className={`w-6 h-6 ${accent.bg} rounded-full flex items-center justify-center text-black text-sm font-bold`}>
                     2
                   </div>
                   <div>
@@ -1584,7 +1585,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-[#C6FF3A] rounded-full flex items-center justify-center text-black text-sm font-bold">
+                  <div className={`w-6 h-6 ${accent.bg} rounded-full flex items-center justify-center text-black text-sm font-bold`}>
                     3
                   </div>
                   <div>

@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import Script from "next/script"
 import Plasma from "@/components/plasma"
+import { accent } from "@/lib/colors"
 
 const inter = Inter({ subsets: ["latin"], display: "swap" })
 
@@ -75,7 +76,7 @@ export default function RootLayout({
       <body>
         <div className="fixed inset-0 z-0 bg-black">
           <Plasma
-            color="#8b5cf6"
+            color={accent.color}
             speed={0.8}
             direction="forward"
             scale={1.5}

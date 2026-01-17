@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import Image from "next/image"
+import { accent } from "@/lib/colors"
 
 export function LogoMarquee() {
   const [pausedRow, setPausedRow] = useState<string | null>(null)
@@ -10,13 +11,13 @@ export function LogoMarquee() {
   // Logo data with colors and content
   const logos = [
     { name: "Intel", content: "intel", color: "text-neutral-300" },
-    { name: "MongoDB", content: "🟢", color: "text-green-500" },
+    { name: "MongoDB", content: "🟢", color: accent.text },
     { name: "Skitbit", content: "image", color: "text-neutral-300", image: "/images/skitbit-subtle-logo.png" },
     { name: "VK", content: "VK", color: "text-white", bg: "bg-blue-500" },
     { name: "TechCrunch", content: "TC", color: "text-neutral-300" },
     { name: "MailChimp", content: "🐵", color: "text-yellow-500" },
     { name: "ESJ", content: "image", color: "text-neutral-300", image: "/images/esj-subtle-logo.png" },
-    { name: "Kickstarter", content: "K", color: "text-white", bg: "bg-green-500" },
+    { name: "Kickstarter", content: "K", color: "text-white", bg: accent.bg },
   ]
 
   const secondRowLogos = [
@@ -26,7 +27,7 @@ export function LogoMarquee() {
     { name: "Google", content: "G", color: "text-neutral-300" },
     { name: "Behance", content: "Be", color: "text-white", bg: "bg-blue-500" },
     { name: "Apple", content: "🍎", color: "text-neutral-300" },
-    { name: "TransferWise", content: "✓", color: "text-white", bg: "bg-green-500" },
+    { name: "TransferWise", content: "✓", color: "text-white", bg: accent.bg },
     { name: "Medium", content: "M", color: "text-neutral-300" },
   ]
 
@@ -64,7 +65,7 @@ export function LogoMarquee() {
         {/* Header */}
         <div className="flex flex-col items-center justify-between mb-12 sm:flex-row sm:items-center">
           <h2 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl text-center sm:text-left">
-            Meet our <span className="text-lime-300">top-tier</span>
+            Meet our <span className={accent.text}>top-tier</span>
             <br />
             customers
           </h2>

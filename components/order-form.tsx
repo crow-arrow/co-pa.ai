@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { X, ArrowLeft, ArrowRight, Check, Package, Palette, ImageIcon } from "lucide-react"
 import Image from "next/image"
+import { accent } from "@/lib/colors"
 
 interface OrderFormProps {
   isOpen: boolean
@@ -235,8 +236,8 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-neutral-800">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-[#C6FF3A]/20 rounded-lg flex items-center justify-center">
-              <Package className="h-4 w-4 text-[#C6FF3A]" />
+            <div className={`w-8 h-8 ${accent.bg20} rounded-lg flex items-center justify-center`}>
+              <Package className={`h-4 w-4 ${accent.text}`} />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-white">Order Configuration</h2>
@@ -244,7 +245,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Badge className="bg-[#C6FF3A]/20 text-[#C6FF3A] border-[#C6FF3A]/30">
+            <Badge className={`${accent.bg20} ${accent.text} ${accent.border30}`}>
               Total: {formatPrice(calculateTotal())}
             </Badge>
             <Button
@@ -265,7 +266,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
               <div key={step} className="flex items-center">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
-                    step <= currentStep ? "bg-[#C6FF3A] text-black" : "bg-neutral-700 text-neutral-400"
+                    step <= currentStep ? `${accent.bg} text-black` : "bg-neutral-700 text-neutral-400"
                   }`}
                 >
                   {step < currentStep ? <Check className="h-4 w-4" /> : step}
@@ -273,7 +274,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                 {step < 4 && (
                   <div
                     className={`w-8 h-0.5 mx-2 transition-colors ${
-                      step < currentStep ? "bg-[#C6FF3A]" : "bg-neutral-700"
+                      step < currentStep ? accent.bg : "bg-neutral-700"
                     }`}
                   />
                 )}
@@ -304,7 +305,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                       </p>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-[#C6FF3A]">{order.package?.price}</div>
+                      <div className={`text-2xl font-bold ${accent.text}`}>{order.package?.price}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -323,7 +324,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                       onClick={() => setOrder({ ...order, has3DModel: true })}
                       className={`h-16 ${
                         order.has3DModel === true
-                          ? "bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90"
+                          ? `${accent.bg} text-black ${accent.hoverBg90}`
                           : "border-neutral-700 text-neutral-300 hover:bg-neutral-800"
                       }`}
                     >
@@ -337,7 +338,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                       onClick={() => setOrder({ ...order, has3DModel: false })}
                       className={`h-16 ${
                         order.has3DModel === false
-                          ? "bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90"
+                          ? `${accent.bg} text-black ${accent.hoverBg90}`
                           : "border-neutral-700 text-neutral-300 hover:bg-neutral-800"
                       }`}
                     >
@@ -353,16 +354,16 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
               {/* For Startup/Premium plans, show what's included */}
               {order.package?.includes3DModeling && (
                 <div className="space-y-4">
-                  <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+                  <div className={`p-4 ${accent.bg10} border ${accent.border30} rounded-lg`}>
                     <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-400" />
+                      <Check className={`h-5 w-5 ${accent.text}`} />
                       <div>
-                        <h4 className="text-green-300 font-semibold">
+                        <h4 className={`${accent.text} font-semibold`}>
                           {order.package.name === "Startup"
                             ? "Simple 3D Modeling Included"
                             : "Complex 3D Modeling Included"}
                         </h4>
-                        <p className="text-green-200 text-sm">
+                        <p className={`${accent.text80} text-sm`}>
                           Your package includes professional 3D modeling - no additional cost!
                         </p>
                       </div>
@@ -387,7 +388,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                     key={option.name}
                     className={`cursor-pointer transition-all hover:scale-[1.02] ${
                       order.modelingAddOn?.name === option.name
-                        ? "glass-border-enhanced bg-[#C6FF3A]/10"
+                        ? `glass-border-enhanced ${accent.bg10}`
                         : "glass-border bg-neutral-900/50 hover:glass-border-enhanced"
                     }`}
                     onClick={() =>
@@ -417,11 +418,11 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
                             <h4 className="font-semibold text-white">{option.name}</h4>
-                            <span className="text-[#C6FF3A] font-semibold">+₹{option.price_inr.toLocaleString()}</span>
+                            <span className={`${accent.text} font-semibold`}>+₹{option.price_inr.toLocaleString()}</span>
                           </div>
                           <p className="text-sm text-neutral-400">{option.complexity}</p>
                         </div>
-                        {order.modelingAddOn?.name === option.name && <Check className="h-5 w-5 text-[#C6FF3A]" />}
+                        {order.modelingAddOn?.name === option.name && <Check className={`h-5 w-5 ${accent.text}`} />}
                       </div>
                     </CardContent>
                   </Card>
@@ -446,7 +447,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                     onClick={() => setOrder({ ...order, needsRenders: true })}
                     className={`h-16 ${
                       order.needsRenders === true
-                        ? "bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90"
+                        ? `${accent.bg} text-black ${accent.hoverBg90}`
                         : "border-neutral-700 text-neutral-300 hover:bg-neutral-800"
                     }`}
                   >
@@ -460,7 +461,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                     onClick={() => setOrder({ ...order, needsRenders: false, renderPackage: null })}
                     className={`h-16 ${
                       order.needsRenders === false
-                        ? "bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90"
+                        ? `${accent.bg} text-black ${accent.hoverBg90}`
                         : "border-neutral-700 text-neutral-300 hover:bg-neutral-800"
                     }`}
                   >
@@ -481,7 +482,7 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                         key={option.name}
                         className={`cursor-pointer transition-all hover:scale-[1.02] ${
                           order.renderPackage?.name === option.name
-                            ? "glass-border-enhanced bg-[#C6FF3A]/10"
+                            ? `glass-border-enhanced ${accent.bg10}`
                             : "glass-border bg-neutral-900/50 hover:glass-border-enhanced"
                         }`}
                         onClick={() =>
@@ -504,11 +505,11 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                               <p className="text-sm text-neutral-400">{option.quantity} high-quality renders</p>
                             </div>
                             <div className="text-right">
-                              <span className="text-[#C6FF3A] font-semibold">
+                              <span className={`${accent.text} font-semibold`}>
                                 +₹{option.price_inr.toLocaleString()}
                               </span>
                               {order.renderPackage?.name === option.name && (
-                                <Check className="h-4 w-4 text-[#C6FF3A] ml-2 inline" />
+                                <Check className={`h-4 w-4 ${accent.text} ml-2 inline`} />
                               )}
                             </div>
                           </div>
@@ -566,9 +567,9 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
                     </div>
                   )}
 
-                  <div className="flex justify-between items-center py-3 bg-[#C6FF3A]/10 rounded-lg px-4">
+                  <div className={`flex justify-between items-center py-3 ${accent.bg10} rounded-lg px-4`}>
                     <h4 className="text-lg font-bold text-white">Total</h4>
-                    <span className="text-2xl font-bold text-[#C6FF3A]">{formatPrice(calculateTotal())}</span>
+                    <span className={`text-2xl font-bold ${accent.text}`}>{formatPrice(calculateTotal())}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -594,14 +595,14 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
               className={`${
                 isNextDisabled()
                   ? "bg-neutral-700 text-neutral-400 cursor-not-allowed"
-                  : "bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90"
+                  : `${accent.bg} text-black ${accent.hoverBg90}`
               }`}
             >
               Next Step
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           ) : (
-            <Button onClick={handleConfirmOrder} className="bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90">
+            <Button onClick={handleConfirmOrder} className={`${accent.bg} text-black ${accent.hoverBg90}`}>
               Confirm & Send via WhatsApp
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>

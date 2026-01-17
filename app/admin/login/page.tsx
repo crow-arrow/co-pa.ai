@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AlertCircle } from "lucide-react"
+import { accent } from "@/lib/colors"
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("")
@@ -112,7 +113,7 @@ export default function AdminLogin() {
                 <Label htmlFor="password" className="text-neutral-200">
                   Password
                 </Label>
-                <button type="button" className="text-sm text-[#C6FF3A] hover:underline">
+                <button type="button" className={`text-sm ${accent.text} hover:underline`}>
                   Forgot password?
                 </button>
               </div>
@@ -127,7 +128,7 @@ export default function AdminLogin() {
               />
             </div>
 
-            <Button type="submit" disabled={isLoading} className="w-full bg-[#C6FF3A] text-black hover:bg-[#C6FF3A]/90">
+            <Button type="submit" disabled={isLoading} className={`w-full ${accent.bg} text-black ${accent.hoverBg90}`}>
               {isLoading ? (
                 <>
                   <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin mr-2"></div>
@@ -142,7 +143,7 @@ export default function AdminLogin() {
           <div className="mt-8 text-center">
             <p className="text-neutral-400 text-sm">
               Need help? Contact{" "}
-              <a href="mailto:support@theskitbit.com" className="text-[#C6FF3A] hover:underline">
+              <a href="mailto:support@theskitbit.com" className={`${accent.text} hover:underline`}>
                 support@theskitbit.com
               </a>
             </p>

@@ -6,10 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { CheckCircle2 } from "lucide-react"
 import { ExamplesDialog } from "./examples-dialog"
+import { ACCENT } from "@/lib/colors"
 
 type Feature = { text: string; muted?: boolean }
-
-const ACCENT = "#C6FF3A"
 
 function FeatureItem({ text, muted = false }: Feature) {
   return (

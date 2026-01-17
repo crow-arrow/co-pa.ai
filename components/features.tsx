@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Star } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { accent } from "@/lib/colors"
 
 interface FeaturesContent {
   title: string
@@ -82,10 +83,10 @@ export function Features() {
           </CardHeader>
           <CardContent>
             <div className="mb-6 flex items-end gap-4">
-              <div className="text-5xl font-bold text-lime-300">4.9</div>
+              <div className={`text-5xl font-bold ${accent.text}`}>4.9</div>
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-lime-300 text-lime-300" />
+                  <Star key={i} className={`h-5 w-5 ${accent.text}`} style={{ fill: accent.color }} />
                 ))}
               </div>
             </div>

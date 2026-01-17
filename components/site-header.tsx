@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import Image from "next/image"
 import { Menu, Briefcase, Tag, HelpCircle, FileText, Info } from "lucide-react"
+import { accent } from "@/lib/colors"
 
 export function SiteHeader() {
   const links = [
@@ -48,9 +49,7 @@ export function SiteHeader() {
           <div className="hidden md:flex">
             <Button
               asChild
-              className="bg-lime-400 text-black font-medium rounded-lg px-6 py-2.5
-                         hover:bg-lime-300 hover:shadow-md hover:scale-[1.02]
-                         transition-all"
+              className={`${accent.bg} text-black font-medium rounded-lg px-6 py-2.5 ${accent.hoverBg90} hover:shadow-md hover:scale-[1.02] transition-all`}
             >
               <Link href="#contact">Chat With Us</Link>
             </Button>
@@ -105,9 +104,7 @@ export function SiteHeader() {
                 <div className="mt-auto border-t border-gray-800 p-4">
                   <Button
                     asChild
-                    className="w-full bg-lime-400 text-black font-medium rounded-lg px-6 py-2.5
-                               hover:bg-lime-300 hover:shadow-md hover:scale-[1.02]
-                               transition-all"
+                    className={`w-full ${accent.bg} text-black font-medium rounded-lg px-6 py-2.5 ${accent.hoverBg90} hover:shadow-md hover:scale-[1.02] transition-all`}
                   >
                     <Link href="https://wa.link/65mf3i">Get a Quote</Link>
                   </Button>
