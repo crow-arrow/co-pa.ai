@@ -713,19 +713,19 @@ export default function AdminDashboard() {
             <TabsList className="grid w-full grid-cols-3 bg-neutral-900/50 border border-neutral-800">
               <TabsTrigger
                 value="hero"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 Hero
               </TabsTrigger>
               <TabsTrigger
                 value="features"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 Features
               </TabsTrigger>
               <TabsTrigger
                 value="footer"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 Footer
               </TabsTrigger>
@@ -879,19 +879,19 @@ export default function AdminDashboard() {
             <TabsList className="grid w-full grid-cols-3 bg-neutral-900/50 border border-neutral-800">
               <TabsTrigger
                 value="startup"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 Startup
               </TabsTrigger>
               <TabsTrigger
                 value="pro"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 Pro
               </TabsTrigger>
               <TabsTrigger
                 value="premium"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 Premium
               </TabsTrigger>
@@ -1067,25 +1067,25 @@ export default function AdminDashboard() {
             <TabsList className="grid w-full grid-cols-4 bg-neutral-900/50 border border-neutral-800">
               <TabsTrigger
                 value="settings"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 Settings
               </TabsTrigger>
               <TabsTrigger
                 value="modeling"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 3D Modeling
               </TabsTrigger>
               <TabsTrigger
                 value="renders"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 Renders
               </TabsTrigger>
               <TabsTrigger
                 value="flow"
-                className={`data-[state=active]:${accent.bg20} data-[state=active]:${accent.text}`}
+                className="data-[state=active]:bg-accent/20 data-[state=active]:text-accent"
               >
                 Form Flow
               </TabsTrigger>

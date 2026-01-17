@@ -4,7 +4,6 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import Script from "next/script"
 import Plasma from "@/components/plasma"
-import { accent } from "@/lib/colors"
 
 const inter = Inter({ subsets: ["latin"], display: "swap" })
 
@@ -38,7 +37,7 @@ export default function RootLayout({
           {`
             function updateFavicon() {
               const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              const faviconHref = darkMode ? '/icons/skitbit-white.svg' : '/icons/favicon-dark.svg';
+              const faviconHref = darkMode ? '/icons/co-pa-white.svg' : '/icons/favicon-dark.svg';
               let link = document.querySelector("link[rel~='icon']");
               if (!link) {
                 link = document.createElement('link');
@@ -76,7 +75,7 @@ export default function RootLayout({
       <body>
         <div className="fixed inset-0 z-0 bg-black">
           <Plasma
-            color={accent.color}
+            color="#6A4C93"
             speed={0.8}
             direction="forward"
             scale={1.5}

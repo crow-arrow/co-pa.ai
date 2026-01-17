@@ -23,13 +23,12 @@ export function SiteHeader() {
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-1.5">
             <Image
-              src="/icons/skitbit-white.svg"
+              src="/icons/co-pa-white.svg"
               alt="Skitbit logo"
-              width={20}
-              height={20}
-              className="h-5 w-5"
+              width={64}
+              height={64}
+              className="h-16 w-16"
             />
-            <span className="font-semibold tracking-wide text-white">Skitbit</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -75,7 +74,7 @@ export function SiteHeader() {
                 {/* Brand Header */}
                 <div className="flex items-center gap-1.5 px-4 py-4 border-b border-gray-800">
                   <Image
-                    src="/icons/skitbit-white.svg"
+                    src="/icons/co-pa-white.svg"
                     alt="Skitbit logo"
                     width={24}
                     height={24}
