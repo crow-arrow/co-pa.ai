@@ -1,6 +1,9 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+// Явно указываем, что это динамический маршрут
+export const dynamic = 'force-dynamic'
+
+import { useEffect, useState, useRef, useMemo, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -119,7 +122,7 @@ interface ActivityItem {
 const defaultContent: ContentData = {
   hero: {
     title: "HIGH-IMPACT 3D ANIMATION FOR BRANDS",
-    subtitle: "skitbit",
+    subtitle: "copa",
     buttonText: "Chat With Us",
   },
   features: {
@@ -128,10 +131,10 @@ const defaultContent: ContentData = {
   },
   footer: {
     tagline: "Experience 3D animation like never before. We craft cinematic visuals for brands and products.",
-    copyright: "© 2025 — Skitbit International Uk",
+    copyright: "© 2025 — Copa International Uk",
   },
   about: {
-    title: "About Skitbit International",
+    title: "About Copa International",
     description: "Pioneering the future of 3D product animation for global brands.",
     mission: "To create stunning 3D animations that help brands tell their story and connect with their audience.",
     vision: "To be the world's leading 3D animation studio, known for creativity, quality, and innovation.",
@@ -231,7 +234,7 @@ const defaultContent: ContentData = {
     ],
   },
   settings: {
-    adminEmail: "admin@theskitbit.com",
+    adminEmail: "admin@co-pa.com",
     adminPassword: "1234",
   },
 }
@@ -276,6 +279,58 @@ const initialActivity: ActivityItem[] = [
   },
 ]
 
+// Format time ago function - moved outside component to avoid recreation on each render
+const formatTimeAgo = (timestamp: number) => {
+  const seconds = Math.floor((Date.now() - timestamp) / 1000)
+
+  let interval = Math.floor(seconds / 31536000)
+  if (interval > 1) return `${interval} years ago`
+
+  interval = Math.floor(seconds / 2592000)
+  if (interval > 1) return `${interval} months ago`
+
+  interval = Math.floor(seconds / 86400)
+  if (interval > 1) return `${interval} days ago`
+  if (interval === 1) return `1 day ago`
+
+  interval = Math.floor(seconds / 3600)
+  if (interval > 1) return `${interval} hours ago`
+  if (interval === 1) return `1 hour ago`
+
+  interval = Math.floor(seconds / 60)
+  if (interval > 1) return `${interval} minutes ago`
+  if (interval === 1) return `1 minute ago`
+
+  return `Just now`
+}
+
+// Sidebar items - moved outside component to avoid recreation
+const sidebarItems = [
+  { id: "home", name: "Home", icon: Home },
+  { id: "content", name: "Content", icon: FileText },
+  { id: "pricing", name: "Pricing", icon: DollarSign },
+  { id: "orders", name: "Orders", icon: Package },
+  { id: "analytics", name: "Analytics", icon: BarChart3 },
+  { id: "settings", name: "Settings", icon: Settings },
+  { id: "help", name: "Help", icon: HelpCircle },
+]
+
+// Optimized deep clone function with fallback for browser compatibility
+const deepClone = <T,>(obj: T): T => {
+  try {
+    // Use structuredClone if available (faster and more reliable)
+    if (typeof structuredClone !== 'undefined') {
+      return structuredClone(obj)
+    }
+    // Fallback for older browsers
+    return JSON.parse(JSON.stringify(obj))
+  } catch (error) {
+    // If both methods fail, return original (shouldn't happen with valid JSON)
+    console.error('Error cloning object:', error)
+    return JSON.parse(JSON.stringify(obj))
+  }
+}
+
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -311,7 +366,7 @@ export default function AdminDashboard() {
       if (sessionCookie && sessionCookie.includes("authenticated")) {
         setIsAuthenticated(true)
         // Load saved content from localStorage
-        const savedContent = localStorage.getItem("skitbit-content")
+        const savedContent = localStorage.getItem("copa-content")
         if (savedContent) {
           const parsedContent = JSON.parse(savedContent)
           setContent(parsedContent)
@@ -319,7 +374,7 @@ export default function AdminDashboard() {
         }
 
         // Load saved activity from localStorage
-        const savedActivity = localStorage.getItem("skitbit-activity")
+        const savedActivity = localStorage.getItem("copa-activity")
         if (savedActivity) {
           setActivityItems(JSON.parse(savedActivity))
         }
@@ -334,16 +389,22 @@ export default function AdminDashboard() {
 
   // Check for changes whenever content is updated
   useEffect(() => {
-    const hasContentChanged = JSON.stringify(content) !== JSON.stringify(originalContent)
-    setHasChanges(hasContentChanged)
+    try {
+      const hasContentChanged = JSON.stringify(content) !== JSON.stringify(originalContent)
+      setHasChanges(hasContentChanged)
+    } catch (error) {
+      // If comparison fails (e.g., circular reference), assume no changes
+      console.error('Error comparing content:', error)
+      setHasChanges(false)
+    }
   }, [content, originalContent])
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     document.cookie = "admin-session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
     router.push("/admin/login")
-  }
+  }, [router])
 
-  const handleContentChange = (section: keyof ContentData, field: string, value: string | string[]) => {
+  const handleContentChange = useCallback((section: keyof ContentData, field: string, value: string | string[]) => {
     setContent((prev) => ({
       ...prev,
       [section]: {
@@ -351,9 +412,9 @@ export default function AdminDashboard() {
         [field]: value,
       },
     }))
-  }
+  }, [])
 
-  const handlePricingChange = (tier: "startup" | "pro" | "premium", field: string, value: string | string[]) => {
+  const handlePricingChange = useCallback((tier: "startup" | "pro" | "premium", field: string, value: string | string[]) => {
     setContent((prev) => ({
       ...prev,
       pricing: {
@@ -364,22 +425,22 @@ export default function AdminDashboard() {
         },
       },
     }))
-  }
+  }, [])
 
-  const addFeature = (tier: "startup" | "pro" | "premium") => {
+  const addFeature = useCallback((tier: "startup" | "pro" | "premium") => {
     if (featureToAdd.trim()) {
       handlePricingChange(tier, "features", [...content.pricing[tier].features, featureToAdd.trim()])
       setFeatureToAdd("")
     }
-  }
+  }, [featureToAdd, content.pricing, handlePricingChange])
 
-  const removeFeature = (tier: "startup" | "pro" | "premium", index: number) => {
+  const removeFeature = useCallback((tier: "startup" | "pro" | "premium", index: number) => {
     const newFeatures = [...content.pricing[tier].features]
     newFeatures.splice(index, 1)
     handlePricingChange(tier, "features", newFeatures)
-  }
+  }, [content.pricing, handlePricingChange])
 
-  const addVideo = (tier: "startup" | "pro" | "premium") => {
+  const addVideo = useCallback((tier: "startup" | "pro" | "premium") => {
     if (videoToAdd.trim()) {
       // Extract YouTube ID if full URL is pasted
       let videoId = videoToAdd.trim()
@@ -397,15 +458,15 @@ export default function AdminDashboard() {
       handlePricingChange(tier, "videos", [...content.pricing[tier].videos, videoId])
       setVideoToAdd("")
     }
-  }
+  }, [videoToAdd, content.pricing, handlePricingChange])
 
-  const removeVideo = (tier: "startup" | "pro" | "premium", index: number) => {
+  const removeVideo = useCallback((tier: "startup" | "pro" | "premium", index: number) => {
     const newVideos = [...content.pricing[tier].videos]
     newVideos.splice(index, 1)
     handlePricingChange(tier, "videos", newVideos)
-  }
+  }, [content.pricing, handlePricingChange])
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     setIsSaving(true)
     setSaveMessage("")
 
@@ -414,7 +475,10 @@ export default function AdminDashboard() {
 
     try {
       // Save to localStorage
-      localStorage.setItem("skitbit-content", JSON.stringify(content))
+      localStorage.setItem("copa-content", JSON.stringify(content))
+
+      // Dispatch custom event to notify other components in the same tab
+      window.dispatchEvent(new Event("copa-content-updated"))
 
       // Create a new activity item
       const section = selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)
@@ -439,10 +503,10 @@ export default function AdminDashboard() {
 
       const updatedActivity = [newActivity, ...activityItems.slice(0, 9)]
       setActivityItems(updatedActivity)
-      localStorage.setItem("skitbit-activity", JSON.stringify(updatedActivity))
+      localStorage.setItem("copa-activity", JSON.stringify(updatedActivity))
 
-      // Update original content to match current content
-      setOriginalContent(JSON.parse(JSON.stringify(content)))
+      // Update original content to match current content (using optimized clone)
+      setOriginalContent(deepClone(content))
       setHasChanges(false)
       setSaveMessage("Changes saved successfully!")
 
@@ -453,14 +517,14 @@ export default function AdminDashboard() {
     }
 
     setIsSaving(false)
-  }
+  }, [content, selectedPage, activityItems])
 
-  const handlePreview = () => {
+  const handlePreview = useCallback(() => {
     // Open homepage in new tab
     window.open("/", "_blank")
-  }
+  }, [])
 
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     if (searchQuery.trim()) {
       // Simple search functionality
       const sections = ["home", "content", "pricing", "analytics", "settings", "help"]
@@ -470,37 +534,13 @@ export default function AdminDashboard() {
         setSearchQuery("")
       }
     }
-  }
+  }, [searchQuery])
 
-  const clearNotifications = () => {
+  const clearNotifications = useCallback(() => {
     setNotifications(0)
-  }
+  }, [])
 
-  const formatTimeAgo = (timestamp: number) => {
-    const seconds = Math.floor((Date.now() - timestamp) / 1000)
-
-    let interval = Math.floor(seconds / 31536000)
-    if (interval > 1) return `${interval} years ago`
-
-    interval = Math.floor(seconds / 2592000)
-    if (interval > 1) return `${interval} months ago`
-
-    interval = Math.floor(seconds / 86400)
-    if (interval > 1) return `${interval} days ago`
-    if (interval === 1) return `1 day ago`
-
-    interval = Math.floor(seconds / 3600)
-    if (interval > 1) return `${interval} hours ago`
-    if (interval === 1) return `1 hour ago`
-
-    interval = Math.floor(seconds / 60)
-    if (interval > 1) return `${interval} minutes ago`
-    if (interval === 1) return `1 minute ago`
-
-    return `Just now`
-  }
-
-  // Update activity times
+  // Update activity times - optimized to only update visible items
   useEffect(() => {
     const updateTimes = () => {
       setActivityItems((prev) =>
@@ -511,45 +551,35 @@ export default function AdminDashboard() {
       )
     }
 
+    // Initial update
     updateTimes()
-    const interval = setInterval(updateTimes, 60000) // Update every minute
+    
+    // Update every minute, but only if page is visible
+    const interval = setInterval(() => {
+      if (!document.hidden) {
+        updateTimes()
+      }
+    }, 60000)
 
     return () => clearInterval(interval)
   }, [])
 
-  const navigateActivity = (direction: "prev" | "next") => {
+  const navigateActivity = useCallback((direction: "prev" | "next") => {
     if (direction === "prev" && activityPage > 0) {
       setActivityPage((prev) => prev - 1)
     } else if (direction === "next" && (activityPage + 1) * 4 < activityItems.length) {
       setActivityPage((prev) => prev + 1)
     }
-  }
+  }, [activityPage, activityItems.length])
 
-  const currentActivityItems = activityItems.slice(activityPage * 4, (activityPage + 1) * 4)
+  // Memoize current activity items to avoid recalculation on every render
+  const currentActivityItems = useMemo(
+    () => activityItems.slice(activityPage * 4, (activityPage + 1) * 4),
+    [activityItems, activityPage]
+  )
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-        <div className={`w-6 h-6 border-2 ${accent.border} border-t-transparent rounded-full animate-spin`}></div>
-      </div>
-    )
-  }
-
-  if (!isAuthenticated) {
-    return null
-  }
-
-  const sidebarItems = [
-    { id: "home", name: "Home", icon: Home },
-    { id: "content", name: "Content", icon: FileText },
-    { id: "pricing", name: "Pricing", icon: DollarSign },
-    { id: "orders", name: "Orders", icon: Package },
-    { id: "analytics", name: "Analytics", icon: BarChart3 },
-    { id: "settings", name: "Settings", icon: Settings },
-    { id: "help", name: "Help", icon: HelpCircle },
-  ]
-
-  const renderMainContent = () => {
+  // Memoize renderMainContent - MUST be before conditional returns to follow Rules of Hooks
+  const renderMainContent = useCallback(() => {
     if (selectedPage === "home") {
       return (
         <div className="space-y-6">
@@ -1523,8 +1553,8 @@ export default function AdminDashboard() {
                   className="bg-red-600 hover:bg-red-700"
                   onClick={() => {
                     if (confirm("Are you sure you want to reset all dashboard data? This cannot be undone.")) {
-                      localStorage.removeItem("skitbit-content")
-                      localStorage.removeItem("skitbit-activity")
+                      localStorage.removeItem("copa-content")
+                      localStorage.removeItem("copa-activity")
                       setContent(defaultContent)
                       setOriginalContent(defaultContent)
                       setActivityItems(initialActivity)
@@ -1603,7 +1633,7 @@ export default function AdminDashboard() {
               <CardContent className="space-y-4">
                 <div>
                   <p className="text-white font-medium">Email Support</p>
-                  <p className="text-neutral-400 text-sm">admin@theskitbit.com</p>
+                  <p className="text-neutral-400 text-sm">admin@thecopa.com</p>
                 </div>
                 <div>
                   <p className="text-white font-medium">Response Time</p>
@@ -1658,6 +1688,19 @@ export default function AdminDashboard() {
     }
 
     return null
+  }, [selectedPage, content, activityItems, analyticsData, currentActivityItems, hasChanges, isSaving, saveMessage, currentPricingTier, videoToAdd, featureToAdd, searchQuery, handleContentChange, handlePricingChange, handleSave, handlePreview, addFeature, removeFeature, addVideo, removeVideo, navigateActivity])
+
+  // Conditional returns MUST be after all hooks
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <div className={`w-6 h-6 border-2 ${accent.border} border-t-transparent rounded-full animate-spin`}></div>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return null
   }
 
   return (
@@ -1672,7 +1715,7 @@ export default function AdminDashboard() {
                 <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                   <span className="text-black font-bold text-sm">SK</span>
                 </div>
-                <span className="text-xl font-semibold">Skitbit</span>
+                <span className="text-xl font-semibold">Copa</span>
               </div>
               <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(false)}>
                 <X className="h-5 w-5" />
@@ -1721,7 +1764,7 @@ export default function AdminDashboard() {
             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
               <span className="text-black font-bold text-sm">SK</span>
             </div>
-            <span className="text-xl font-semibold">Skitbit</span>
+            <span className="text-xl font-semibold">Copa</span>
           </div>
         </div>
 

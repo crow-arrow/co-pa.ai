@@ -14,10 +14,10 @@ export default function Page() {
   const pricingStructuredData = {
     "@context": "https://schema.org",
     "@type": "WebPageElement",
-    "@id": "https://theskitbit.com/#pricing",
+    "@id": "https://thecopa.com/#pricing",
     name: "Pricing Plans",
     description: "3D Animation pricing plans - Startup, Pro, and Premium packages for all business needs",
-    url: "https://theskitbit.com/#pricing",
+    url: "https://thecopa.com/#pricing",
     mainEntity: {
       "@type": "PriceSpecification",
       name: "3D Animation Services",
@@ -52,28 +52,28 @@ export default function Page() {
   const pageStructuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": "https://theskitbit.com/",
-    name: "Skitbit | 3D Animation Made Simple, Reliable & Scalable",
+    "@id": "https://thecopa.com/",
+    name: "Copa | 3D Animation Made Simple, Reliable & Scalable",
     description:
-      "From product launches to full-scale campaigns, Skitbit delivers 3D animation that’s fast, consistent, and built to wow your audience.",
-    url: "https://theskitbit.com/",
+      "From product launches to full-scale campaigns, Copa delivers 3D animation that's fast, consistent, and built to wow your audience.",
+    url: "https://thecopa.com/",
     mainEntity: {
       "@type": "Organization",
-      name: "Skitbit",
-      url: "https://theskitbit.com",
+      name: "Copa",
+      url: "https://thecopa.com",
       sameAs: [
-        "https://twitter.com/theskitbit",
-        "https://www.youtube.com/@skitbitinternational",
-        "https://instagram.com/theskitbit",
-        "https://threads.com/theskitbit",
+        "https://twitter.com/thecopa",
+        "https://www.youtube.com/@copainternational",
+        "https://instagram.com/thecopa",
+        "https://threads.com/thecopa",
       ],
     },
     hasPart: [
       {
         "@type": "WebPageElement",
-        "@id": "https://theskitbit.com/#pricing",
+        "@id": "https://thecopa.com/#pricing",
         name: "Pricing Section",
-        url: "https://theskitbit.com/#pricing",
+        url: "https://thecopa.com/#pricing",
       },
     ],
   }

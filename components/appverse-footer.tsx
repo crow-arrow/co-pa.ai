@@ -16,7 +16,7 @@ interface FooterContent {
 
 const defaultContent: FooterContent = {
   tagline: "Experience 3D animation like never before. We craft cinematic visuals for brands and products.",
-  copyright: "© 2025 — Skitbit International Uk",
+  copyright: "© 2025 — Copa International Uk",
 }
 
 export function AppverseFooter() {
@@ -24,16 +24,41 @@ export function AppverseFooter() {
 
   useEffect(() => {
     // Load content from localStorage
-    const savedContent = localStorage.getItem("skitbit-content")
-    if (savedContent) {
-      try {
-        const parsed = JSON.parse(savedContent)
-        if (parsed.footer) {
-          setContent(parsed.footer)
+    const loadContent = () => {
+      const savedContent = localStorage.getItem("copa-content")
+      if (savedContent) {
+        try {
+          const parsed = JSON.parse(savedContent)
+          if (parsed.footer) {
+            setContent(parsed.footer)
+          }
+        } catch (error) {
+          console.error("Error parsing saved content:", error)
         }
-      } catch (error) {
-        console.error("Error parsing saved content:", error)
       }
+    }
+
+    // Load on mount
+    loadContent()
+
+    // Listen for storage changes (from other tabs/windows)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "copa-content") {
+        loadContent()
+      }
+    }
+
+    // Listen for custom event (from same tab)
+    const handleContentUpdate = () => {
+      loadContent()
+    }
+
+    window.addEventListener("storage", handleStorageChange)
+    window.addEventListener("copa-content-updated", handleContentUpdate)
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange)
+      window.removeEventListener("copa-content-updated", handleContentUpdate)
     }
   }, [])
 
@@ -81,7 +106,7 @@ export function AppverseFooter() {
                     loop={true}
                     muted={true}
                     playsInline={true}
-                    aria-label="Skitbit app preview - approvals made easy"
+                    aria-label="Copa app preview - approvals made easy"
                   />
                   {/* On-screen content */}
                   <div className="relative p-3">
@@ -108,8 +133,8 @@ export function AppverseFooter() {
             {/* Brand */}
             <div className="space-y-3">
               <div className="flex items-center gap-1.5">
-                <Image src="/icons/co-pa-white.svg" alt="Skitbit logo" width={24} height={24} className="h-6 w-6" />
-                <span className={`text-xl font-semibold ${accent.text}`}>Skitbit</span>
+                <Image src="/icons/co-pa-white.svg" alt="Copa logo" width={24} height={24} className="h-6 w-6" />
+                <span className={`text-xl font-semibold ${accent.text}`}>Copa</span>
               </div>
               <p className="max-w-sm text-sm text-neutral-400">{content.tagline}</p>
             </div>
@@ -134,11 +159,11 @@ export function AppverseFooter() {
                   <li className="flex items-center gap-2">
                     <Twitter className="h-4 w-4 text-neutral-400" />
                     <a
-                      href="https://twitter.com/theskitbit"
+                      href="https://twitter.com/thecopa"
                       target="_blank"
                       rel="noopener noreferrer"
                       className={accent.hoverText}
-                      aria-label="Follow skitbit on Twitter"
+                      aria-label="Follow copa on Twitter"
                     >
                       X/Twitter
                     </a>
@@ -146,11 +171,11 @@ export function AppverseFooter() {
                   <li className="flex items-center gap-2">
                     <Youtube className="h-4 w-4 text-neutral-400" />
                     <a
-                      href="https://www.youtube.com/@skitbitinternational"
+                      href="https://www.youtube.com/@copainternational"
                       target="_blank"
                       rel="noopener noreferrer"
                       className={accent.hoverText}
-                      aria-label="Subscribe to skitbit on YouTube"
+                      aria-label="Subscribe to copa on YouTube"
                     >
                       YouTube
                     </a>
@@ -158,11 +183,11 @@ export function AppverseFooter() {
                   <li className="flex items-center gap-2">
                     <Instagram className="h-4 w-4 text-neutral-400" />
                     <a
-                      href="https://instagram.com/theskitbit"
+                      href="https://instagram.com/thecopa"
                       target="_blank"
                       rel="noopener noreferrer"
                       className={accent.hoverText}
-                      aria-label="Follow skitbit on Instagram"
+                      aria-label="Follow copa on Instagram"
                     >
                       Instagram
                     </a>
@@ -170,11 +195,11 @@ export function AppverseFooter() {
                   <li className="flex items-center gap-2">
                     <MessageCircle className="h-4 w-4 text-neutral-400" />
                     <a
-                      href="https://threads.com/theskitbit"
+                      href="https://threads.com/thecopa"
                       target="_blank"
                       rel="noopener noreferrer"
                       className={accent.hoverText}
-                      aria-label="Follow skitbit on Threads"
+                      aria-label="Follow copa on Threads"
                     >
                       Threads
                     </a>

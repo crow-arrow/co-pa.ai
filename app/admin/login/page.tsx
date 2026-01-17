@@ -1,5 +1,8 @@
 "use client"
 
+// Явно указываем, что это динамический маршрут
+export const dynamic = 'force-dynamic'
+
 import type React from "react"
 
 import { useState } from "react"
@@ -25,15 +28,39 @@ export default function AdminLogin() {
 
     // Simple client-side authentication
     setTimeout(() => {
-      // Default credentials
-      if (
-        (email === "admin@theskitbit.com" && password === "1234") ||
-        (email === "Addy@theskitbit.com" && password === "1234")
-      ) {
+      // Normalize email to lowercase for comparison
+      const normalizedEmail = email.toLowerCase().trim()
+      
+      // Try to load credentials from localStorage (from Settings)
+      let savedEmail = ""
+      let savedPassword = ""
+      
+      try {
+        const savedContent = localStorage.getItem("copa-content")
+        if (savedContent) {
+          const parsed = JSON.parse(savedContent)
+          if (parsed.settings) {
+            savedEmail = parsed.settings.adminEmail?.toLowerCase().trim() || ""
+            savedPassword = parsed.settings.adminPassword || ""
+          }
+        }
+      } catch (error) {
+        console.error("Error loading saved credentials:", error)
+      }
+      
+      // Check against saved credentials first, then defaults
+      const isValid =
+        (savedEmail && normalizedEmail === savedEmail && password === savedPassword)
+      
+      if (isValid) {
         // Set a cookie that expires in 24 hours
         const expiryDate = new Date()
         expiryDate.setTime(expiryDate.getTime() + 24 * 60 * 60 * 1000)
-        document.cookie = `admin-session=authenticated; path=/; expires=${expiryDate.toUTCString()}`
+        document.cookie = `admin-session=authenticated; path=/; expires=${expiryDate.toUTCString()}; SameSite=Lax`
+        
+        // Also store in localStorage as backup
+        localStorage.setItem("admin-authenticated", "true")
+        
         router.push("/admin")
       } else {
         setError("Invalid email or password")
@@ -51,9 +78,9 @@ export default function AdminLogin() {
             <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
               <span className="text-black font-bold text-lg">SK</span>
             </div>
-            <span className="text-2xl font-semibold text-white">Skitbit</span>
+            <span className="text-2xl font-semibold text-white">Copa</span>
           </div>
-          <h1 className="text-4xl font-bold text-white mt-12">Welcome to Skitbit Admin</h1>
+          <h1 className="text-4xl font-bold text-white mt-12">Welcome to Copa Admin</h1>
           <p className="text-purple-100 mt-4 max-w-md">
             Manage your website content, pricing, and settings from one central dashboard.
           </p>
@@ -76,7 +103,7 @@ export default function AdminLogin() {
           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
             <span className="text-black font-bold text-lg">SK</span>
           </div>
-          <span className="text-2xl font-semibold text-white">Skitbit</span>
+          <span className="text-2xl font-semibold text-white">Copa</span>
         </div>
 
         <div className="w-full max-w-md">
@@ -102,7 +129,7 @@ export default function AdminLogin() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@theskitbit.com"
+                placeholder="admin@thecopa.com"
                 className="bg-[#1a1a1a] border-neutral-800 text-white"
                 required
               />
@@ -143,8 +170,8 @@ export default function AdminLogin() {
           <div className="mt-8 text-center">
             <p className="text-neutral-400 text-sm">
               Need help? Contact{" "}
-              <a href="mailto:support@theskitbit.com" className={`${accent.text} hover:underline`}>
-                support@theskitbit.com
+              <a href="mailto:support@thecopa.com" className={`${accent.text} hover:underline`}>
+                support@thecopa.com
               </a>
             </p>
           </div>

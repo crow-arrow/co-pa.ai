@@ -21,21 +21,6 @@ function FeatureItem({ text, muted = false }: Feature) {
 
 type Currency = "INR" | "USD"
 
-const PRICES: Record<Currency, { startup: string; pro: string; premium: string; save: string }> = {
-  INR: {
-    startup: "₹25,000/-",
-    pro: "₹55,000/-",
-    premium: "₹1,70,500/-",
-    save: "Save Flat ₹1,500/-",
-  },
-  USD: {
-    startup: "$299",
-    pro: "$699",
-    premium: "$2,049",
-    save: "Save $20",
-  },
-}
-
 function guessLocalCurrency(): Currency {
   const lang = typeof navigator !== "undefined" ? navigator.language : ""
   const tz = typeof Intl !== "undefined" ? Intl.DateTimeFormat().resolvedOptions().timeZone : ""
@@ -43,48 +28,103 @@ function guessLocalCurrency(): Currency {
   return "USD"
 }
 
-// Startup demo videos
-const startupVideos = [
-  "ysz5S6PUM-U",
-  "aqz-KE-bpKQ",
-  "ScMzIvxBSi4",
-  "dQw4w9WgXcQ",
-  "VYOjWnS4cMY",
-  "9bZkp7q19f0",
-  "3JZ_D3ELwOQ",
-  "e-ORhEE9VVg",
-  "fJ9rUzIMcZQ",
-]
+interface PricingContent {
+  startup: {
+    price_usd: string
+    price_inr: string
+    features: string[]
+    videos: string[]
+  }
+  pro: {
+    price_usd: string
+    price_inr: string
+    features: string[]
+    videos: string[]
+  }
+  premium: {
+    price_usd: string
+    price_inr: string
+    features: string[]
+    videos: string[]
+  }
+}
 
-// Pro demo videos
-const proVideos = [
-  "ASV2myPRfKA",
-  "eTfS2lqwf6A",
-  "KALbYHmGV4I",
-  "Go0AA9hZ4as",
-  "sB7RZ9QCOAg",
-  "TK2WboJOJaw",
-  "5Xq7UdXXOxI",
-  "kMjWCidQSK0",
-  "RKKdQvwKOhQ",
-]
-
-// Premium demo videos
-const premiumVideos = [
-  "v2AC41dglnM",
-  "pRpeEdMmmQ0",
-  "3AtDnEC4zak",
-  "JRfuAukYTKg",
-  "LsoLEjrDogU",
-  "RB-RcX5DS5A",
-  "hTWKbfoikeg",
-  "YQHsXMglC9A",
-  "09R8_2nJtjg",
-]
+const defaultPricing: PricingContent = {
+  startup: {
+    price_usd: "$299",
+    price_inr: "₹25,000/-",
+    features: [
+      "Up to 15s 3D Animation",
+      "2 Revisions",
+      "Creative Backgrounds",
+      "Simple 3D Animation",
+      "7–10 Day Turnaround time",
+      "Simple 3D Models Included",
+    ],
+    videos: [
+      "ysz5S6PUM-U",
+      "aqz-KE-bpKQ",
+      "ScMzIvxBSi4",
+      "dQw4w9WgXcQ",
+      "VYOjWnS4cMY",
+      "9bZkp7q19f0",
+      "3JZ_D3ELwOQ",
+      "e-ORhEE9VVg",
+      "fJ9rUzIMcZQ",
+    ],
+  },
+  pro: {
+    price_usd: "$699",
+    price_inr: "₹55,000/-",
+    features: [
+      "Up to 25s 3D Animation",
+      "4 Revisions",
+      "Creative Backgrounds, Lite graphics",
+      "Detailed 3D Animation",
+      "20–25 Day Turnaround",
+      "Pre-built 3D Models",
+    ],
+    videos: [
+      "ASV2myPRfKA",
+      "eTfS2lqwf6A",
+      "KALbYHmGV4I",
+      "Go0AA9hZ4as",
+      "sB7RZ9QCOAg",
+      "TK2WboJOJaw",
+      "5Xq7UdXXOxI",
+      "kMjWCidQSK0",
+      "RKKdQvwKOhQ",
+    ],
+  },
+  premium: {
+    price_usd: "$2,049",
+    price_inr: "₹1,70,500/-",
+    features: [
+      "40–60s 3D Animation",
+      "Creative Backgrounds, Lite graphics",
+      "Liquid, Smoke, Fire, Cloth Simulations",
+      "Lighting, Camera Animation, Depth effects",
+      "Priority – 20 Day Turnaround",
+      "Highly Complex 3D Models Included",
+    ],
+    videos: [
+      "v2AC41dglnM",
+      "pRpeEdMmmQ0",
+      "3AtDNEC4zak",
+      "JRfuAukYTKg",
+      "LsoLEjrDogU",
+      "RB-RcX5DS5A",
+      "hTWKbfoikeg",
+      "YQHsXMglC9A",
+      "09R8_2nJtjg",
+    ],
+  },
+}
 
 export function Pricing() {
   const [openPlan, setOpenPlan] = useState<null | "Startup" | "Pro" | "Premium">(null)
   const [currency, setCurrency] = useState<Currency>("USD")
+  const [pricingContent, setPricingContent] = useState<PricingContent>(defaultPricing)
 
   useEffect(() => {
     let cancelled = false
@@ -103,6 +143,51 @@ export function Pricing() {
       cancelled = true
     }
   }, [])
+
+  useEffect(() => {
+    // Load content from localStorage
+    const loadContent = () => {
+      const savedContent = localStorage.getItem("copa-content")
+      if (savedContent) {
+        try {
+          const parsed = JSON.parse(savedContent)
+          if (parsed.pricing) {
+            setPricingContent(parsed.pricing)
+          }
+        } catch (error) {
+          console.error("Error parsing saved content:", error)
+        }
+      }
+    }
+
+    // Load on mount
+    loadContent()
+
+    // Listen for storage changes (from other tabs/windows)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "copa-content") {
+        loadContent()
+      }
+    }
+
+    // Listen for custom event (from same tab)
+    const handleContentUpdate = () => {
+      loadContent()
+    }
+
+    window.addEventListener("storage", handleStorageChange)
+    window.addEventListener("copa-content-updated", handleContentUpdate)
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange)
+      window.removeEventListener("copa-content-updated", handleContentUpdate)
+    }
+  }, [])
+
+  // Get prices based on currency
+  const getPrice = (tier: "startup" | "pro" | "premium") => {
+    return currency === "INR" ? pricingContent[tier].price_inr : pricingContent[tier].price_usd
+  }
 
   return (
     <section id="pricing" className="text-white" itemScope itemType="https://schema.org/PriceSpecification">
@@ -144,7 +229,7 @@ export function Pricing() {
               className="absolute right-4 top-11 rounded-full px-2 py-0.5 text-[10px]"
               style={{ backgroundColor: "#1f1f1f", color: "#d4d4d4" }}
             >
-              {PRICES[currency].save}
+              {currency === "INR" ? "Save Flat ₹1,500/-" : "Save $20"}
             </div>
 
             <CardHeader className="space-y-3 pb-4">
@@ -153,7 +238,7 @@ export function Pricing() {
               </div>
               <div className="flex items-end gap-2 text-neutral-100">
                 <div className="text-xl font-bold tracking-tight" itemProp="price">
-                  {PRICES[currency].startup}
+                  {getPrice("startup")}
                 </div>
                 <span className="pb-0.5 text-[11px] text-neutral-400">per video</span>
                 <meta itemProp="priceCurrency" content={currency} />
@@ -184,14 +269,7 @@ export function Pricing() {
 
             <CardContent className="pt-0">
               <ul className="grid gap-2" itemProp="description">
-                {[
-                  "10–15s Reel/Teaser (1 SKU)",
-                  "Simple background + lighting",
-                  "1 revision",
-                  "Delivered in 10 days",
-                  "Social reel/ad-ready visuals",
-                  "3D Modelling - Included",
-                ].map((f, i) => (
+                {pricingContent.startup.features.map((f, i) => (
                   <FeatureItem key={i} text={f} />
                 ))}
               </ul>
@@ -211,7 +289,7 @@ export function Pricing() {
               </div>
               <div className="flex items-end gap-2 text-neutral-100">
                 <div className="text-xl font-bold tracking-tight" itemProp="price">
-                  {PRICES[currency].pro}
+                  {getPrice("pro")}
                 </div>
                 <span className="pb-0.5 text-[11px] text-neutral-400">per video</span>
                 <meta itemProp="priceCurrency" content={currency} />
@@ -243,14 +321,7 @@ export function Pricing() {
 
             <CardContent className="pt-0">
               <ul className="grid gap-2" itemProp="description">
-                {[
-                  "20–25s Animation (1 SKU)",
-                  "Fixed Shot-list (no surprises)",
-                  "Creative background + pro graphics",
-                  "2 structured revisions",
-                  "Delivered in 3 weeks",
-                  "3D Modelling - Included",
-                ].map((f, i) => (
+                {pricingContent.pro.features.map((f, i) => (
                   <FeatureItem key={i} text={f} />
                 ))}
               </ul>
@@ -270,7 +341,7 @@ export function Pricing() {
               </div>
               <div className="flex items-end gap-2 text-white">
                 <div className="text-xl font-bold tracking-tight" itemProp="price">
-                  {PRICES[currency].premium}
+                  {getPrice("premium")}
                 </div>
                 <span className="pb-0.5 text-[11px] text-neutral-400">per video</span>
                 <meta itemProp="priceCurrency" content={currency} />
@@ -301,14 +372,7 @@ export function Pricing() {
 
             <CardContent className="relative pt-0">
               <ul className="grid gap-2" itemProp="description">
-                {[
-                  "30–40s Animation (up to 5 SKUs)",
-                  "Advanced storyboard + shot design",
-                  "Delivered in 4 week",
-                  "Lighting, Camera Animation, Depth effects",
-                  "Up to 3 structured revisions",
-                  "3D Modelling - Included",
-                ].map((f, i) => (
+                {pricingContent.premium.features.map((f, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-4 w-4" style={{ color: ACCENT }} />
                     <span className="text-sm text-neutral-200">{f}</span>
@@ -326,22 +390,22 @@ export function Pricing() {
         open={openPlan === "Startup"}
         onOpenChange={(v) => setOpenPlan(v ? "Startup" : null)}
         planName="Startup Plan"
-        price={PRICES[currency].startup}
-        videoIds={startupVideos}
+        price={getPrice("startup")}
+        videoIds={pricingContent.startup.videos}
       />
       <ExamplesDialog
         open={openPlan === "Pro"}
         onOpenChange={(v) => setOpenPlan(v ? "Pro" : null)}
         planName="Pro Plan"
-        price={PRICES[currency].pro}
-        videoIds={proVideos}
+        price={getPrice("pro")}
+        videoIds={pricingContent.pro.videos}
       />
       <ExamplesDialog
         open={openPlan === "Premium"}
         onOpenChange={(v) => setOpenPlan(v ? "Premium" : null)}
         planName="Premium Plan"
-        price={PRICES[currency].premium}
-        videoIds={premiumVideos}
+        price={getPrice("premium")}
+        videoIds={pricingContent.premium.videos}
       />
     </section>
   )

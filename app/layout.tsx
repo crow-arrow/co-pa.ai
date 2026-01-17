@@ -8,9 +8,9 @@ import Plasma from "@/components/plasma"
 const inter = Inter({ subsets: ["latin"], display: "swap" })
 
 export const metadata: Metadata = {
-  title: "Skitbit | 3D Animation Made Simple, Reliable & Scalable",
+  title: "Copa | 3D Animation Made Simple, Reliable & Scalable",
   description:
-    "From product launches to full-scale campaigns, Skitbit delivers 3D animation that's fast, consistent, and built to wow your audience.",
+    "From product launches to full-scale campaigns, Copa delivers 3D animation that's fast, consistent, and built to wow your audience.",
   generator: "v0.app",
 }
 
@@ -74,14 +74,14 @@ export default function RootLayout({
       </head>
       <body>
         <div className="fixed inset-0 z-0 bg-black">
-          <Plasma
+          {/* <Plasma
             color="#6A4C93"
             speed={0.8}
             direction="forward"
             scale={1.5}
             opacity={0.4}
             mouseInteractive={true}
-          />
+          /> */}
         </div>
         <div className="relative z-10">{children}</div>
       </body>

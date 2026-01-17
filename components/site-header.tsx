@@ -24,7 +24,7 @@ export function SiteHeader() {
           <Link href="/" className="flex items-center gap-1.5">
             <Image
               src="/icons/co-pa-white.svg"
-              alt="Skitbit logo"
+              alt="Copa logo"
               width={64}
               height={64}
               className="h-16 w-16"
@@ -75,12 +75,12 @@ export function SiteHeader() {
                 <div className="flex items-center gap-1.5 px-4 py-4 border-b border-gray-800">
                   <Image
                     src="/icons/co-pa-white.svg"
-                    alt="Skitbit logo"
+                    alt="Copa logo"
                     width={24}
                     height={24}
                     className="h-6 w-6"
                   />
-                  <span className="font-semibold tracking-wide text-white text-lg">Skitbit</span>
+                  <span className="font-semibold tracking-wide text-white text-lg">Copa</span>
                 </div>
 
                 {/* Nav Links */}

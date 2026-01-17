@@ -69,12 +69,42 @@ export function OrderForm({ isOpen, onClose, selectedPackage }: OrderFormProps) 
   })
 
   useEffect(() => {
-    const savedContent = localStorage.getItem("skitbit-content")
-    if (savedContent) {
-      const content = JSON.parse(savedContent)
-      if (content.orderForm) {
-        setOrderConfig(content.orderForm)
+    // Load content from localStorage
+    const loadContent = () => {
+      const savedContent = localStorage.getItem("copa-content")
+      if (savedContent) {
+        try {
+          const content = JSON.parse(savedContent)
+          if (content.orderForm) {
+            setOrderConfig(content.orderForm)
+          }
+        } catch (error) {
+          console.error("Error parsing saved content:", error)
+        }
       }
+    }
+
+    // Load on mount
+    loadContent()
+
+    // Listen for storage changes (from other tabs/windows)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "copa-content") {
+        loadContent()
+      }
+    }
+
+    // Listen for custom event (from same tab)
+    const handleContentUpdate = () => {
+      loadContent()
+    }
+
+    window.addEventListener("storage", handleStorageChange)
+    window.addEventListener("copa-content-updated", handleContentUpdate)
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange)
+      window.removeEventListener("copa-content-updated", handleContentUpdate)
     }
   }, [])
 

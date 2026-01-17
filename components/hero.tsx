@@ -1,13 +1,74 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import LazyVideo from "./lazy-video"
 import { accent } from "@/lib/colors"
 
+interface HeroContent {
+  title: string
+  subtitle: string
+  buttonText: string
+}
+
+const defaultContent: HeroContent = {
+  title: "HIGH-IMPACT 3D ANIMATION FOR BRANDS",
+  subtitle: "copa",
+  buttonText: "Chat With Us",
+}
+
 export function Hero() {
+  const [content, setContent] = useState<HeroContent>(defaultContent)
+
+  useEffect(() => {
+    // Load content from localStorage
+    const loadContent = () => {
+      const savedContent = localStorage.getItem("copa-content")
+      if (savedContent) {
+        try {
+          const parsed = JSON.parse(savedContent)
+          if (parsed.hero) {
+            setContent(parsed.hero)
+          }
+        } catch (error) {
+          console.error("Error parsing saved content:", error)
+        }
+      }
+    }
+
+    // Load on mount
+    loadContent()
+
+    // Listen for storage changes (from other tabs/windows)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "copa-content") {
+        loadContent()
+      }
+    }
+
+    // Listen for custom event (from same tab)
+    const handleContentUpdate = () => {
+      loadContent()
+    }
+
+    window.addEventListener("storage", handleStorageChange)
+    window.addEventListener("copa-content-updated", handleContentUpdate)
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange)
+      window.removeEventListener("copa-content-updated", handleContentUpdate)
+    }
+  }, [])
+
+  // Parse title into parts - split by spaces
+  // Highlight parts containing "3D" or "ANIMATION"
+  const titleParts = content.title.split(" ")
+
   const buttonNew = (
     <Button asChild className={`rounded-full ${accent.bg} px-6 text-black ${accent.hoverBg90}`}>
       <a href="https://wa.link/rc25na" target="_blank" rel="noopener noreferrer">
-        Chat With Us
+        {content.buttonText}
       </a>
     </Button>
   )
@@ -17,13 +78,23 @@ export function Hero() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center py-14 sm:py-20">
           <div className="mb-5 flex items-center gap-2">
-            <Image src="/icons/co-pa-white.svg" alt="Skitbit logo" width={32} height={32} className="h-8 w-8" />
-            <p className={`text-sm uppercase tracking-[0.25em] ${accent.text80}`}>skitbit</p>
+            <Image src="/icons/co-pa-white.svg" alt="Copa logo" width={32} height={32} className="h-8 w-8" />
+            <p className={`text-sm uppercase tracking-[0.25em] ${accent.text80}`}>{content.subtitle}</p>
           </div>
           <h1 className="mt-3 text-center text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-            <span className="block">HIGH-IMPACT</span>
-            <span className={`block ${accent.text} drop-shadow-[0_0_20px_rgba(255,69,0,0.35)]`}>3D ANIMATION</span>
-            <span className="block">FOR BRANDS</span>
+            {titleParts.map((part, index) => {
+              // Highlight parts containing "3D" or "ANIMATION"
+              const isHighlighted = part.includes("3D") || part.includes("ANIMATION")
+              return (
+                <span key={index} className="block">
+                  {isHighlighted ? (
+                    <span className={`${accent.text} drop-shadow-[0_0_20px_rgba(255,69,0,0.35)]`}>{part}</span>
+                  ) : (
+                    part
+                  )}
+                </span>
+              )
+            })}
           </h1>
           <div className="mt-6">{buttonNew}</div>
 
@@ -80,7 +151,7 @@ function PhoneCard({
             <div className="text-3xl font-bold leading-snug text-white/90">{title}</div>
             <p className="text-xs text-white/70">{sub}</p>
             <div className={`mt-3 inline-flex items-center rounded-full bg-black/40 px-2 py-0.5 text-[10px] uppercase tracking-wider ${accent.text}`}>
-              {tone === "calm" ? "skitbit app" : tone}
+              {tone === "calm" ? "copa app" : tone}
             </div>
           </div>
         </div>

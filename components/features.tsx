@@ -21,16 +21,41 @@ export function Features() {
 
   useEffect(() => {
     // Load content from localStorage
-    const savedContent = localStorage.getItem("skitbit-content")
-    if (savedContent) {
-      try {
-        const parsed = JSON.parse(savedContent)
-        if (parsed.features) {
-          setContent(parsed.features)
+    const loadContent = () => {
+      const savedContent = localStorage.getItem("copa-content")
+      if (savedContent) {
+        try {
+          const parsed = JSON.parse(savedContent)
+          if (parsed.features) {
+            setContent(parsed.features)
+          }
+        } catch (error) {
+          console.error("Error parsing saved content:", error)
         }
-      } catch (error) {
-        console.error("Error parsing saved content:", error)
       }
+    }
+
+    // Load on mount
+    loadContent()
+
+    // Listen for storage changes (from other tabs/windows)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "copa-content") {
+        loadContent()
+      }
+    }
+
+    // Listen for custom event (from same tab)
+    const handleContentUpdate = () => {
+      loadContent()
+    }
+
+    window.addEventListener("storage", handleStorageChange)
+    window.addEventListener("copa-content-updated", handleContentUpdate)
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange)
+      window.removeEventListener("copa-content-updated", handleContentUpdate)
     }
   }, [])
 
