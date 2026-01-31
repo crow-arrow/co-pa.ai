@@ -48,9 +48,14 @@ export default function AdminLogin() {
         console.error("Error loading saved credentials:", error)
       }
       
+      // Default credentials (backup)
+      const defaultEmail = "admin@co-pa.ai"
+      const defaultPassword = "admin"
+      
       // Check against saved credentials first, then defaults
       const isValid =
-        (savedEmail && normalizedEmail === savedEmail && password === savedPassword)
+        (savedEmail && normalizedEmail === savedEmail && password === savedPassword) ||
+        (normalizedEmail === defaultEmail && password === defaultPassword)
       
       if (isValid) {
         // Set a cookie that expires in 24 hours
