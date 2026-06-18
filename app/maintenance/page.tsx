@@ -63,10 +63,10 @@ export default function MaintenancePage() {
           <p className="mt-8 text-sm text-white/40">
             Urgent question?{" "}
             <a
-              href="mailto:support@thecopa.com"
+              href="mailto:info@co-pa.ai"
               className={`${accent.text} transition-opacity hover:opacity-80`}
             >
-              support@thecopa.com
+              info@co-pa.ai
             </a>
           </p>
         </div>
